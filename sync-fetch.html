@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="sync-fetch.css" />
+
+  <title>Daily Chuckles</title>
+</head>
+
+<body>
+  <h1>Daily Chuckles</h1>
+  <ul id="main"></ul>
+  <script>
+    const main = document.getElementById("main")
+
+    const urls = [
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+    ]
+
+    main.innerHTML = "<p>Loading...</p>"
+
+    Promise.all(urls.map(url => fetch(url)))
+      .then(responses => Promise.all(responses.map(response => response.json())))
+      .then(data => {
+        console.log(data)
+        main.innerHTML = data.map(item => `<li>${item["setup"]} - ${item["punchline"]}</li>`).join("")
+      })
+  </script>
+
+  <a href="index.html">Refresh</a>
+</body>
+
+</html>

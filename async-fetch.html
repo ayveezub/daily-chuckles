@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="async-fetch.css" />
+
+  <title>Daily Chuckles</title>
+</head>
+
+<body>
+  <h1>Daily Chuckles</h1>
+  <ul id="main"></ul>
+  <script>
+    const main = document.getElementById("main")
+
+    const urls = [
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+      "https://official-joke-api.appspot.com/jokes/random",
+    ]
+
+    function fetchJoke(url) {
+      return fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not OK")
+          }
+          return response.json()
+        })
+        .then(data => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `${data["setup"]} - ${data["punchline"]}`
+          main.appendChild(listItem)
+        })
+        .catch(error => {
+          console.error("There has been a problem with your fetch operation:", error)
+        })
+    }
+
+    urls.forEach(url => fetchJoke(url))
+  </script>
+
+  <a href="index.html">Refresh</a>
+</body>
+
+</html>
